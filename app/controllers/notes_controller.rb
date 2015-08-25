@@ -6,8 +6,12 @@ class NotesController < ApplicationController
   end
 
   def create
+    tags = params[:tags].split(',').collect(&:strip)
     @note = Note.create(note_params)
     if @note.save
+      tags.each do |tag|
+        @note.tags << Tag.create(name: tag)
+      end
       render json: @note
     else
       render json: @note.errors
@@ -17,8 +21,7 @@ class NotesController < ApplicationController
   private
 
   def note_params
-    params.permit(:body, :title)
+    params.permit(:title, :body)
   end
-
 
 end
