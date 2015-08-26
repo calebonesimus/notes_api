@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comments, except: [:new, :edit]
   # resources :users, except: [:new, :edit]
   # resources :notes, except: [:new, :edit]
 
