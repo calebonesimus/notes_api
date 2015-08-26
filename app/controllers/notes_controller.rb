@@ -38,11 +38,15 @@ class NotesController < ApplicationController
   end
 
   def update
-    @note.update(note_params)
-    if @note.save
-      render json: @note
+    if @user && @user.notes.include?(@note)
+      @note.update(note_params)
+      if @note.save
+        render json: @note
+      else
+        render json: @note.errors
+      end
     else
-      render json: @note.errors
+      render text: "You can only edit your own notes."
     end
   end
 
