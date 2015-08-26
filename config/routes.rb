@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  resources :notes, except: [:new, :edit]
+  # resources :users, except: [:new, :edit]
+  # resources :notes, except: [:new, :edit]
+
+  post '/api/users' => 'users#create'
 
   get '/api/notes' => 'notes#index'
   post '/api/notes' => 'notes#create'

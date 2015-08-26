@@ -1,8 +1,12 @@
 class NotesController < ApplicationController
 
   def index
-    @notes = Note.all
-    render json: @notes
+    if @user
+      @notes = Note.find_by "user = ?", @user
+    else
+      @notes = Note.all
+      render json: @notes
+    end
   end
 
   def create
