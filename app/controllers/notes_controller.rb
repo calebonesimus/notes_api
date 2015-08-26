@@ -2,19 +2,27 @@ class NotesController < ApplicationController
 
   def index
     if @user
-      @notes = Note.find_by "user = ?", @user
+      @notes = @user.notes
     else
       @notes = Note.all
-      render json: @notes
     end
+    render json: @notes
+    
   end
 
   def create
-    tags = params[:tags].split(',').collect(&:strip)
-    @note = Note.create(note_params)
+    if params[:tags]
+      tags = params[:tags].split(',').collect(&:strip)
+    end
+    @note = Note.new(note_params)
     if @note.save
-      tags.each do |tag|
-        @note.tags << Tag.create(name: tag)
+      if @user
+        @user.notes << @note
+      end
+      if tags
+        tags.each do |tag|
+          @note.tags << Tag.create(name: tag)
+        end
       end
       render json: @note
     else
