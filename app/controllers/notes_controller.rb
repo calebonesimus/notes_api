@@ -7,23 +7,26 @@ class NotesController < ApplicationController
       @notes = Note.all
     end
     render json: @notes
-    
+
   end
 
   def create
-    if params[:tags]
-      tags = params[:tags].split(',').collect(&:strip)
-    end
+    tags = params[:tags].split(',').collect(&:strip) unless params[:tags].nil?
     @note = Note.new(note_params)
     if @note.save
+
+      # Assign the note to a user if one has been set
       if @user
         @user.notes << @note
       end
+
+      # Add tags if there are any
       if tags
         tags.each do |tag|
           @note.tags << Tag.create(name: tag)
         end
       end
+      
       render json: @note
     else
       render json: @note.errors
