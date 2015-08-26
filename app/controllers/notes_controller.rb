@@ -18,6 +18,14 @@ class NotesController < ApplicationController
     end
   end
 
+  def by_tag
+    @tag = params[:tag_name]
+    @notes = Note.all.select do |note|
+      note.tags.collect(&:name).include?(params[:tag_name])
+    end
+    render json: { tag: @tag, notes: @notes }
+  end
+
   private
 
   def note_params
