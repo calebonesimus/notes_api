@@ -1,4 +1,5 @@
 class NotesController < ApplicationController
+  before_action :set_note, only: [:show, :update]
 
   def index
     if @user
@@ -7,7 +8,10 @@ class NotesController < ApplicationController
       @notes = Note.all
     end
     render json: @notes
+  end
 
+  def show
+    render json: @note
   end
 
   def create
@@ -26,7 +30,16 @@ class NotesController < ApplicationController
           @note.tags << Tag.create(name: tag)
         end
       end
-      
+
+      render json: @note
+    else
+      render json: @note.errors
+    end
+  end
+
+  def update
+    @note.update(note_params)
+    if @note.save
       render json: @note
     else
       render json: @note.errors
@@ -42,6 +55,10 @@ class NotesController < ApplicationController
   end
 
   private
+
+  def set_note
+    @note = Note.find(params[:id])
+  end
 
   def note_params
     params.permit(:title, :body)
