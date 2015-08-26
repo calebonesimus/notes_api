@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     end
   end
 
-  post '/api/users' => 'users#create'
+  post '/api/users' => 'api/users#create'
 
   # get '/api/notes' => 'notes#index'
   # post '/api/notes' => 'notes#create'
@@ -14,5 +14,5 @@ Rails.application.routes.draw do
   # patch '/api/notes/:id' => 'notes#update'
 
 
-  get '/api/notes/tag/:tag_name' => 'notes#by_tag'
+  get '/api/notes/tag/:tag_name' => 'api/notes#by_tag'
 end
