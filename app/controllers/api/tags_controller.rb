@@ -1,9 +1,8 @@
 class Api::TagsController < ApplicationController
 
 def index
-  @notes = Note.all.select do |note|
-    note.tags.collect(&:name).include?(params[:tag_name])
-  end
+  @tag = Tag.find_by_name(params[:tag_name])
+  @notes = @tag.notes
   render json: @notes
 end
 
